@@ -147,12 +147,14 @@ export default function Header() {
                 </Link>
               ))}
               <div className="pt-2 flex items-center justify-between gap-4">
-                <Button
-                  variant="primary"
-                  className="w-full text-xs uppercase font-semibold"
-                >
-                  Book an Appointment
-                </Button>
+                <Link href="/contact">
+                  <Button
+                    variant="primary"
+                    className="w-full text-xs uppercase font-semibold"
+                  >
+                    Book an Appointment
+                  </Button>
+                </Link>
               </div>
             </nav>
           </motion.div>

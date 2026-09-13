@@ -27,7 +27,7 @@ export default function Hero() {
         />
       </div>
 
-      {/* 2. Architectural Diagonal Stair Light Beam (Overlay) */}
+      {/* 2. Architectural Diagonal Light Beam */}
       <div
         className={`pointer-events-none absolute inset-0 z-[1] mix-blend-overlay transition-opacity duration-500 ${
           isDark ? "opacity-70" : "opacity-40"
@@ -52,7 +52,7 @@ export default function Hero() {
         }}
       />
 
-      {/* 4. Left-Side Gradient Shadow (Lighter and softer in Light Mode) */}
+      {/* 4. Left-Side Gradient Shadow */}
       <div
         className="pointer-events-none absolute inset-0 z-[2] transition-all duration-500"
         aria-hidden="true"
@@ -63,7 +63,7 @@ export default function Hero() {
         }}
       />
 
-      {/* 5. Bottom Blur & Gradient Feather Effect */}
+      {/* 5. Bottom Blur Feather Effect */}
       <div
         className="pointer-events-none absolute bottom-0 inset-x-0 h-32 z-[3] backdrop-blur-[2px] transition-all duration-500"
         aria-hidden="true"
@@ -77,16 +77,12 @@ export default function Hero() {
       {/* Content Container */}
       <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1360px] flex-col justify-center px-6 pb-16 pt-28 md:px-10 md:pt-32 lg:px-14 lg:pb-20 lg:pt-24">
         <div className="max-w-xl lg:max-w-[55%]">
-          {/* Title */}
           <h1 className="animate-fade-up font-sans text-[2.85rem] font-bold leading-[1.05] tracking-tighter sm:text-[3.85rem] md:text-[4.75rem] lg:text-[5.25rem]">
-            <span
-              className={` ${isDark ? "bg-gradient-to-r from-[#E6C594] via-[#D4AF37] to-[#E2B2A2]" : "bg-gradient-to-r from-[#E6C594] via-[#D4AF37] to-[#E2B2A2]"} bg-clip-text text-transparent`}
-            >
+            <span className="bg-gradient-to-r from-[#E6C594] via-[#D4AF37] to-[#E2B2A2] bg-clip-text text-transparent">
               Discover Your Beauty
             </span>
           </h1>
 
-          {/* Subheading Text */}
           <p
             className={`animate-fade-up delay-2 mt-6 max-w-[32rem] text-[0.95rem] font-light leading-[1.7] md:text-[1.1rem] transition-colors duration-500 ${
               isDark ? "text-[#E0D8D0]" : "text-[#3D302B]"
@@ -95,11 +91,11 @@ export default function Hero() {
             Personalized artistry for every occasion
           </p>
 
-          {/* Action Buttons */}
           <div className="animate-fade-up delay-3 mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-            <Link href="/#contact">
-              <Button variant="primary">Book an Appointment</Button>
+            <Link href="/contact">
+              <Button variant="primary">Book Appointment</Button>
             </Link>
+
             <Link href="/services">
               <Button variant="outline">View Services</Button>
             </Link>

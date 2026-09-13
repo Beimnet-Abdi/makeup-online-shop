@@ -116,9 +116,6 @@ export default function CTA() {
         >
           Start Your Journey with{" "}
           <span className="inline-flex items-baseline gap-1 uppercase">
-            <sup className="text-[#D4AF37] text-sm md:text-base font-bold tracking-tight relative -top-[0.8em]">
-              by
-            </sup>
             <span className="bg-gradient-to-r from-[#D4AF37] via-[#E6C594] to-[#E2B2A2] bg-clip-text text-transparent">
               Hiwot
             </span>
@@ -147,7 +144,7 @@ export default function CTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
         >
-          <Link href="#contact">
+          <Link href="/contact">
             <Button variant="primary">Book Appointment</Button>
           </Link>
         </motion.div>

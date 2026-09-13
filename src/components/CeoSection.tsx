@@ -6,7 +6,6 @@ import { motion, Variants } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
 
 const luxuryEase: [number, number, number, number] = [0.25, 1, 0.5, 1];
-
 const containerVariants: Variants = {
   hidden: {},
   visible: {
@@ -54,6 +53,7 @@ export default function CeoSection() {
 
   return (
     <section
+      id="ceo-section"
       className={`relative w-full py-20 lg:py-32 px-6 lg:px-16 border-t transition-colors duration-500 overflow-hidden ${
         isDark
           ? "bg-black text-white border-white/10"

@@ -1,16 +1,23 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import emailjs from "@emailjs/browser";
 import Section from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
 import { useTheme } from "@/context/ThemeContext";
 import SocialIcon from "@/components/ui/SocialIcon";
-import { MessageCircle, PhoneCall, Mail, MapPin } from "lucide-react";
+import {
+  Send,
+  Mail,
+  MapPin,
+  MessageCircle,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 
-// Administrator WhatsApp / Phone details
 const WHATSAPP_NUMBER = "251975136484";
-const PHONE_DISPLAY = "+251 975 136 484";
-const EMAIL_ADDRESS = "contact@rutbamakeup.com";
+const EMAIL_ADDRESS = "contact@hiwotmakeup.com";
 
 export default function Contact() {
   const { isDark } = useTheme();
@@ -22,33 +29,64 @@ export default function Contact() {
     message: "",
   });
 
-  const handleSubmit = (e: FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setStatus({ type: null, message: "" });
 
     const interestLabels: Record<string, string> = {
       bridal: "Bridal Makeup",
-      editorial: "Editorial / High Fashion",
-      event: "Special Event Glam",
-      coaching: "1:1 Coaching & Masterclass",
+      editorial: "Event & Party Makeup",
+      event: "Soft Glam",
+      photo: "PhotoShoot",
+      other: "Other",
     };
 
-    const message = `
-*New Booking Inquiry from RUTBA Website*
-━━━━━━━━━━━━━━━━━━━━
+    const templateParams = {
+      client_name: formData.name,
+      client_phone: formData.phone,
+      client_email: formData.email,
+      service_name: interestLabels[formData.interest] || formData.interest,
+      message: formData.message,
+      to_email: EMAIL_ADDRESS,
+    };
 
-*Name:* ${formData.name}
-*Phone:* ${formData.phone}
-*Email:* ${formData.email}
-*Service Interest:* ${interestLabels[formData.interest] || formData.interest}
+    try {
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        templateParams,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!,
+      );
 
-*Message:*
-${formData.message}
-    `.trim();
+      setStatus({
+        type: "success",
+        message: "Thank you! Your message has been sent directly to our team.",
+      });
 
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-
-    window.open(whatsappUrl, "_blank");
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        interest: "bridal",
+        message: "",
+      });
+    } catch (err) {
+      console.error("Failed to send email:", err);
+      setStatus({
+        type: "error",
+        message:
+          "Failed to send message. Please try again or reach out via WhatsApp.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -103,9 +141,27 @@ ${formData.message}
                 isDark ? "text-neutral-400" : "text-neutral-500"
               }`}
             >
-              Fill out your details below and we will prepare your booking
-              inquiry instantly.
+              Fill out your details below and your message will be delivered
+              straight to our mailbox.
             </p>
+
+            {/* In-line Status Message Banner */}
+            {status.type && (
+              <div
+                className={`mb-6 p-4 rounded-xl flex items-center gap-3 text-sm font-sans border ${
+                  status.type === "success"
+                    ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                    : "bg-rose-500/10 border-rose-500/30 text-rose-400"
+                }`}
+              >
+                {status.type === "success" ? (
+                  <CheckCircle className="w-5 h-5 shrink-0" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 shrink-0" />
+                )}
+                <span>{status.message}</span>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -171,6 +227,7 @@ ${formData.message}
                 <input
                   type="email"
                   id="email"
+                  required
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
@@ -242,10 +299,20 @@ ${formData.message}
                 <Button
                   type="submit"
                   variant="primary"
-                  className="w-full md:w-auto gap-2 px-8 py-4"
+                  disabled={loading}
+                  className="w-full md:w-auto gap-2 px-8 py-4 flex items-center justify-center disabled:opacity-50"
                 >
-                  <MessageCircle className="w-5 h-5" />
-                  Send Message via WhatsApp
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Send Message
+                    </>
+                  )}
                 </Button>
               </div>
             </form>
@@ -266,14 +333,13 @@ ${formData.message}
                     We are always here to help you.
                   </h4>
                   <p className="font-sans text-xs md:text-sm font-light text-neutral-400 mb-8">
-                    Reach out through any of our channels or book your
-                    consultation directly.
+                    Reach out through any of our channels or send your inquiry
+                    directly.
                   </p>
                 </div>
 
-                {/* Contact Channels with equal flex spacing */}
+                {/* Contact Channels */}
                 <div className="flex-1 flex flex-col justify-space-between space-y-4">
-                  {/* SMS / WhatsApp */}
                   <a
                     href={`https://wa.me/${WHATSAPP_NUMBER}`}
                     target="_blank"
@@ -293,7 +359,6 @@ ${formData.message}
                     </div>
                   </a>
 
-                  {/* Email */}
                   <a
                     href={`mailto:${EMAIL_ADDRESS}`}
                     className="flex-1 flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#D4AF37]/50 transition-colors group"
@@ -311,7 +376,6 @@ ${formData.message}
                     </div>
                   </a>
 
-                  {/* Location */}
                   <div className="flex-1 flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10">
                     <div className="p-2.5 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37]">
                       <MapPin className="w-5 h-5" />
@@ -327,6 +391,7 @@ ${formData.message}
                   </div>
                 </div>
               </div>
+
               {/* Social Links */}
               <div className="pt-8 border-t border-white/10 mt-8">
                 <p className="font-sans text-xs font-semibold uppercase tracking-widest text-[#D4AF37] mb-4">
@@ -335,9 +400,9 @@ ${formData.message}
                 <div className="flex items-center gap-3">
                   <SocialIcon
                     platform="instagram"
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/hiwotgirma_zoe?stkn=MWUyZzM4djNubGxiaw=="
                   />
-                  <SocialIcon platform="telegram" href="https://t.me" />
+                  <SocialIcon platform="telegram" href="https://t.me/ZoeGD" />
                   <SocialIcon
                     platform="whatsapp"
                     href={`https://wa.me/${WHATSAPP_NUMBER}`}

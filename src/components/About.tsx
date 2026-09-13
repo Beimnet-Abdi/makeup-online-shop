@@ -75,14 +75,14 @@ export default function AboutSection() {
         >
           {/* Pill / Badge */}
           <motion.div variants={textItemVariants} className="mb-6 sm:mb-8">
-            <span
-              className={`inline-block px-5 py-2 rounded-full text-xs sm:text-sm font-light tracking-wide backdrop-blur-md transition-colors duration-500 ${
-                isDark
-                  ? "bg-white/5 border border-white/10 text-[#E0D8CC]"
-                  : "bg-black/5 border border-black/10 text-[#52433D]"
-              }`}
-            >
-              About RUTBA Makeup Artist
+            <span className="inline-block px-5 py-2 rounded-full text-xs font-bold tracking-widest uppercase bg-[#E6C594]/10 text-[#D4AF37] border border-[#D4AF37]/20">
+              <span className="inline-flex items-center">
+                <span className="inline-flex items-center mr-2">About</span>
+                <span className="text-[0.65em] align-top text-[#D4AF37]">
+                  BY
+                </span>
+                <span>HIWOT Makeup Artistry</span>
+              </span>
             </span>
           </motion.div>
 
@@ -113,7 +113,7 @@ export default function AboutSection() {
           {/* CTA Button */}
           <motion.div variants={textItemVariants}>
             <Link
-              href="/about"
+              href="#ceo-section"
               className="inline-flex items-center justify-center px-8 py-4 rounded-full text-sm font-medium tracking-wider uppercase text-[#0D0B0A] bg-gradient-to-r from-[#E6C594] to-[#D4AF37] hover:brightness-110 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-[#D4AF37]/10"
             >
               Discover My Story

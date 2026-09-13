@@ -1,42 +1,40 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Section from "@/components/ui/Section";
 import { useTheme } from "@/context/ThemeContext";
 import { ArrowRight } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
 
-const products = [
-  {
-    id: "1",
-    name: "Brush Set",
-    category: "Tools & Accessories",
-    price: "1,200 ETB",
-    description:
-      "Handcrafted ultra-soft synthetic bristles designed for seamless blending.",
-    image: "/images/products/brush-set.jpg",
-  },
-  {
-    id: "2",
-    name: "Lip Liner Pencil",
-    category: "Lip Care",
-    price: "800 ETB",
-    description:
-      "Lightweight, buildable coverage with a luminous, natural-looking finish.",
-    image: "/images/products/lip-liner.jpg",
-  },
-  {
-    id: "3",
-    name: "Foundation",
-    category: "Complexion",
-    price: "850 ETB",
-    description:
-      "Long-wearing matte formula infused with nourishing oils for all-day comfort.",
-    image: "/images/products/foundation.jpg",
-  },
-];
+interface Product {
+  id: string;
+  name: string;
+  category: string | null;
+  price: string;
+  description: string | null;
+  image: string;
+}
 
 export default function Shop() {
   const { isDark } = useTheme();
+  const [products, setProducts] = useState<Product[]>([]);
+
+  // Fetch products live from Supabase
+  useEffect(() => {
+    async function fetchProducts() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("id, name, category, price, description, image")
+        .order("created_at", { ascending: false });
+
+      if (!error && data) {
+        setProducts(data);
+      }
+    }
+
+    fetchProducts();
+  }, []);
 
   return (
     <Section
@@ -51,7 +49,10 @@ export default function Shop() {
         {/* Header Block */}
         <div className="text-center max-w-4xl mx-auto space-y-4 mb-16 border-b border-white/10 pb-8">
           <span className="inline-block px-5 py-2 rounded-full text-xs font-bold tracking-widest uppercase bg-[#E6C594]/10 text-[#D4AF37] border border-[#D4AF37]/20">
-            RUTBA Professional Shop
+            <span className="inline-flex items-center">
+              <span className="text-[0.65em] align-top text-[#D4AF37]">BY</span>
+              <span>HIWOT Professional Shop</span>
+            </span>
           </span>
 
           {/* Heading */}
@@ -89,6 +90,7 @@ export default function Shop() {
                   src={product.image}
                   alt={product.name}
                   fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <span className="absolute top-3 right-3 bg-[#0D0B0A]/80 backdrop-blur-md text-[#E6C594] text-xs font-semibold px-3 py-1 rounded-full border border-white/10 z-10">
@@ -99,9 +101,11 @@ export default function Shop() {
               {/* Card Details */}
               <div className="space-y-3 text-center flex-1 flex flex-col justify-between pt-1">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-[#D4AF37] mb-1">
-                    {product.category}
-                  </p>
+                  {product.category && (
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#D4AF37] mb-1">
+                      {product.category}
+                    </p>
+                  )}
                   <h3
                     className={`font-sans text-xl font-bold leading-snug ${
                       isDark ? "text-white" : "text-neutral-900"
@@ -109,13 +113,15 @@ export default function Shop() {
                   >
                     {product.name}
                   </h3>
-                  <p
-                    className={`text-xs font-light mt-1.5 leading-relaxed line-clamp-2 ${
-                      isDark ? "text-neutral-400" : "text-neutral-600"
-                    }`}
-                  >
-                    {product.description}
-                  </p>
+                  {product.description && (
+                    <p
+                      className={`text-xs font-light mt-1.5 leading-relaxed line-clamp-2 ${
+                        isDark ? "text-neutral-400" : "text-neutral-600"
+                      }`}
+                    >
+                      {product.description}
+                    </p>
+                  )}
                 </div>
 
                 {/* Animated Order Link with Primary Gold Color & Sliding Arrow */}
