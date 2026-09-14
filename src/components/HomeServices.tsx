@@ -61,8 +61,7 @@ export default function HomeServices() {
               isDark ? "text-neutral-400" : "text-neutral-600"
             }`}
           >
-            Tailored makeup, hair, and nail treatments designed to highlight
-            your natural beauty.
+            Tailored makeup designed to highlight your natural beauty.
           </p>
         </div>
 

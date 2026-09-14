@@ -6,9 +6,9 @@ import CeoSection from "@/components/CeoSection";
 import CTA from "@/components/CTA";
 
 export const metadata: Metadata = {
-  title: "About | RUTBA Makeup Artist",
+  title: "About | HIWOT Makeup Artist",
   description:
-    "Explore premium makeup, hair, bridal, and nail services crafted with precision and luxury care.",
+    "Makeup artistry for every occasion — simple, elegant, and uniquely you.",
 };
 
 export default function AboutPage() {

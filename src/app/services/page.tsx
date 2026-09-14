@@ -4,9 +4,9 @@ import Sevices from "@/components/Services";
 import CTA from "@/components/CTA";
 
 export const metadata: Metadata = {
-  title: "Services | RUTBA Makeup Artist",
+  title: "Services | HIWOT Makeup Artist",
   description:
-    "Explore premium makeup, hair, bridal, and nail services crafted with precision and luxury care.",
+    "Makeup artistry for every occasion — simple, elegant, and uniquely you.",
 };
 
 export default function ServicesPage() {

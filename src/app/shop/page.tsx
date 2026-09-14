@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Shop from "@/components/Shop";
 
 export const metadata: Metadata = {
-  title: "Shop | RUTBA Makeup Artist",
+  title: "Shop | HIWOT Makeup Artist",
   description:
-    "Get in touch with RUTBA Makeup Artist for inquiries about our premium makeup, hair, bridal, and nail services.",
+    "Makeup artistry for every occasion — simple, elegant, and uniquely you.",
 };
 
 export default function ShopPage() {
