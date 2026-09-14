@@ -18,7 +18,7 @@ export default function Hero() {
       {/* 1. Full-width Hero Background Image */}
       <div className="absolute inset-0 z-0 h-full w-full">
         <Image
-          src="/images/Hero-bg.png"
+          src="/images/Hero.png"
           alt="Hero background"
           fill
           priority

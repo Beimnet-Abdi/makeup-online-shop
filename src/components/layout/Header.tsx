@@ -43,7 +43,7 @@ export default function Header() {
       )}
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        {/* Hiwot Logo */}
+        {/* RUTBA Logo */}
         <Link
           href="/"
           className={cn(

@@ -16,7 +16,7 @@ export default function ServicesHero() {
     >
       {/* Background Image Layer */}
       <Image
-        src="/images/hero-powder.png"
+        src="/images/ServiceHero.png"
         alt=""
         fill
         priority
