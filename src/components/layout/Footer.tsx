@@ -142,7 +142,7 @@ export default function Footer() {
               isDark ? "text-neutral-500" : "text-neutral-600"
             }`}
           >
-            © {new Date().getFullYear()} RUTBA Artistry. All rights reserved.
+            © {new Date().getFullYear()} Hiwot Artistry. All rights reserved.
           </p>
           <p
             className={`text-xs transition-colors duration-500 ${

@@ -12,6 +12,27 @@ interface Product {
   image: string;
 }
 
+// File Validation Constants
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB limit
+const ALLOWED_MIME_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+  "image/svg+xml",
+  "image/gif",
+];
+
+const validateFile = (file: File): string | null => {
+  if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+    return "Invalid file type. Only JPEG, PNG, WebP, SVG, and GIF images are allowed.";
+  }
+  if (file.size > MAX_FILE_SIZE) {
+    return "File size exceeds the 5 MB limit. Please select a smaller image.";
+  }
+  return null;
+};
+
 export default function ProductManager() {
   const [products, setProducts] = useState<Product[]>([]);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -65,7 +86,6 @@ export default function ProductManager() {
     }
   };
 
-  // Fixed useEffect to prevent synchronous setState lint/compiler warnings
   useEffect(() => {
     let isSubscribed = true;
 
@@ -96,6 +116,16 @@ export default function ProductManager() {
 
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate uploaded file if selected
+    if (productFile) {
+      const validationError = validateFile(productFile);
+      if (validationError) {
+        alert(validationError);
+        return;
+      }
+    }
+
     setIsUploading(true);
 
     try {
@@ -107,6 +137,7 @@ export default function ProductManager() {
           .from("hiwot-assets")
           .upload(fileName, productFile, {
             cacheControl: "3600",
+            contentType: productFile.type,
             upsert: false,
           });
 
@@ -273,8 +304,20 @@ export default function ProductManager() {
           </label>
           <input
             type="file"
-            accept="image/*"
-            onChange={(e) => setProductFile(e.target.files?.[0] || null)}
+            accept="image/jpeg,image/png,image/webp,image/svg+xml,image/gif"
+            onChange={(e) => {
+              const file = e.target.files?.[0] || null;
+              if (file) {
+                const validationError = validateFile(file);
+                if (validationError) {
+                  alert(validationError);
+                  e.target.value = "";
+                  setProductFile(null);
+                  return;
+                }
+              }
+              setProductFile(file);
+            }}
             className="w-full text-sm text-neutral-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-[#D4AF37] file:text-black file:font-semibold"
             required={!editingProduct}
           />

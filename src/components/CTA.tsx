@@ -71,7 +71,7 @@ export default function CTA() {
     <Section
       className={`py-28 px-6 relative overflow-hidden border-0 transition-colors duration-500 ${
         isDark
-          ? "bg-neutral-900 text-white min-h-[80vh]"
+          ? "bg-neutral-900 text-white"
           : "bg-white text-black border-black/10"
       }`}
     >

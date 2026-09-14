@@ -55,8 +55,8 @@ export default function Shop() {
             </span>
           </span>
 
-          {/* Heading */}
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase tracking-tighter leading-none whitespace-nowrap flex justify-center items-center gap-x-2 sm:gap-x-3">
+          {/* Heading forced to 1 line on desktop using sm:whitespace-nowrap */}
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold uppercase tracking-tight leading-tight flex flex-col sm:flex-row justify-center items-center gap-y-1 gap-x-2 sm:gap-x-3 sm:whitespace-nowrap">
             <span>Essentials Beauty</span>
             <span className="bg-gradient-to-r from-[#E6C594] via-[#D4AF37] to-[#C59B27] bg-clip-text text-transparent">
               Collection

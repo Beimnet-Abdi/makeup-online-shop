@@ -29,7 +29,7 @@ export default function ServicesHero() {
         aria-hidden="true"
       />
 
-      {/* Cinematic Overlays — Deepened bottom gradient stops for the light theme */}
+      {/* Cinematic Overlays — Lighter top edge in light mode for header visibility */}
       <div
         className="pointer-events-none absolute inset-0 transition-opacity duration-500"
         aria-hidden="true"
@@ -42,7 +42,7 @@ export default function ServicesHero() {
             `
             : `
               radial-gradient(ellipse 70% 60% at 50% 45%, rgba(212,175,55,0.15) 0%, transparent 55%),
-              linear-gradient(180deg, rgba(35,30,26,0.6) 0%, rgba(35,30,26,0.3) 40%, rgba(35,30,26,0.85) 70%, #4D433C 100%),
+              linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(35,30,26,0.2) 40%, rgba(35,30,26,0.85) 70%, #4D433C 100%),
               linear-gradient(90deg, rgba(35,30,26,0.5) 0%, transparent 35%, transparent 65%, rgba(35,30,26,0.5) 100%)
             `,
         }}

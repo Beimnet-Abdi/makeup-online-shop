@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import emailjs from "@emailjs/browser";
+import { supabase } from "@/lib/supabaseClient";
 import Section from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
 import { useTheme } from "@/context/ThemeContext";
@@ -16,11 +17,20 @@ import {
   Loader2,
 } from "lucide-react";
 
-const WHATSAPP_NUMBER = "251975136484";
-const EMAIL_ADDRESS = "contact@hiwotmakeup.com";
+interface SiteSettings {
+  whatsapp_number: string;
+  email_address: string;
+  studio_location: string;
+}
 
 export default function Contact() {
   const { isDark } = useTheme();
+  const [contactInfo, setContactInfo] = useState<SiteSettings>({
+    whatsapp_number: "251975136484",
+    email_address: "contact@hiwotmakeup.com",
+    studio_location: "Addis Ababa, Ethiopia",
+  });
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -34,6 +44,33 @@ export default function Contact() {
     type: "success" | "error" | null;
     message: string;
   }>({ type: null, message: "" });
+
+  // Dynamically fetch contact settings from Supabase
+  useEffect(() => {
+    async function fetchContactSettings() {
+      try {
+        const { data, error } = await supabase
+          .from("site_settings")
+          .select("whatsapp_number, email_address, studio_location")
+          .eq("id", 1)
+          .maybeSingle();
+
+        if (error) {
+          console.error("Error fetching contact settings:", error.message);
+        } else if (data) {
+          setContactInfo({
+            whatsapp_number: data.whatsapp_number || "251975136484",
+            email_address: data.email_address || "contact@hiwotmakeup.com",
+            studio_location: data.studio_location || "Addis Ababa, Ethiopia",
+          });
+        }
+      } catch (err) {
+        console.error("Unexpected fetch error:", err);
+      }
+    }
+
+    fetchContactSettings();
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -54,7 +91,7 @@ export default function Contact() {
       client_email: formData.email,
       service_name: interestLabels[formData.interest] || formData.interest,
       message: formData.message,
-      to_email: EMAIL_ADDRESS,
+      to_email: contactInfo.email_address,
     };
 
     try {
@@ -339,53 +376,56 @@ export default function Contact() {
                 </div>
 
                 {/* Contact Channels */}
-                <div className="flex-1 flex flex-col justify-space-between space-y-4">
+                <div className="flex-1 flex flex-col justify-between space-y-4">
+                  {/* WhatsApp / SMS */}
                   <a
-                    href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                    href={`https://wa.me/${contactInfo.whatsapp_number}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#D4AF37]/50 transition-colors group"
+                    className="flex-1 flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#D4AF37]/50 transition-colors group min-w-0"
                   >
-                    <div className="p-2.5 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
+                    <div className="p-2.5 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors shrink-0">
                       <MessageCircle className="w-5 h-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="font-sans text-xs font-semibold text-neutral-400 uppercase tracking-wider">
                         SMS / WhatsApp
                       </p>
-                      <p className="font-sans text-sm md:text-base font-medium">
-                        +{WHATSAPP_NUMBER}
+                      <p className="font-sans text-sm md:text-base font-medium truncate">
+                        +{contactInfo.whatsapp_number}
                       </p>
                     </div>
                   </a>
 
+                  {/* Email Section */}
                   <a
-                    href={`mailto:${EMAIL_ADDRESS}`}
-                    className="flex-1 flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#D4AF37]/50 transition-colors group"
+                    href={`mailto:${contactInfo.email_address}`}
+                    className="flex-1 flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#D4AF37]/50 transition-colors group min-w-0"
                   >
-                    <div className="p-2.5 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
+                    <div className="p-2.5 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors shrink-0">
                       <Mail className="w-5 h-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="font-sans text-xs font-semibold text-neutral-400 uppercase tracking-wider">
                         Email
                       </p>
-                      <p className="font-sans text-sm md:text-base font-medium">
-                        {EMAIL_ADDRESS}
+                      <p className="font-sans text-xs sm:text-sm md:text-base font-medium break-all sm:break-words">
+                        {contactInfo.email_address}
                       </p>
                     </div>
                   </a>
 
-                  <div className="flex-1 flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10">
-                    <div className="p-2.5 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37]">
+                  {/* Studio Location */}
+                  <div className="flex-1 flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 min-w-0">
+                    <div className="p-2.5 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] shrink-0">
                       <MapPin className="w-5 h-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="font-sans text-xs font-semibold text-neutral-400 uppercase tracking-wider">
                         Studio Location
                       </p>
-                      <p className="font-sans text-sm md:text-base font-medium">
-                        Addis Ababa, Ethiopia
+                      <p className="font-sans text-sm md:text-base font-medium break-words leading-snug">
+                        {contactInfo.studio_location}
                       </p>
                     </div>
                   </div>
@@ -405,10 +445,9 @@ export default function Contact() {
                   <SocialIcon platform="telegram" href="https://t.me/ZoeGD" />
                   <SocialIcon
                     platform="whatsapp"
-                    href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                    href={`https://wa.me/${contactInfo.whatsapp_number}`}
                   />
                   <SocialIcon platform="tiktok" href="https://tiktok.com" />
-                  <SocialIcon platform="linkedin" href="https://linkedin.com" />
                 </div>
               </div>
             </div>

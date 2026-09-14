@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import LoginForm from "@/components/LoginForm";
-import AdminForms from "@/components/AdminForm";
+import AdminForms from "@/components/admin/AdminForm";
 
 export default function AdminDashboard() {
   const [user, setUser] = useState<User | null>(null);
