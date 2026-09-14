@@ -21,9 +21,9 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "RUTBA | Makeup Artist",
+  title: "HIWOT | Makeup Artist",
   description:
-    "Premium makeup artistry — bridal elegance to everyday glamour. Transforming faces and boosting confidence.",
+    "Makeup artistry for every occasion — simple, elegant, and uniquely you.",
 };
 
 export default function RootLayout({
