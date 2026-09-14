@@ -24,6 +24,20 @@ export const metadata: Metadata = {
   title: "HIWOT | Makeup Artist",
   description:
     "Makeup artistry for every occasion — simple, elegant, and uniquely you.",
+  openGraph: {
+    title: "Hiwot | Makeup Artist",
+    description:
+      "Makeup artistry for every occasion — simple, elegant, and uniquely you.",
+    url: "https://hiwot-makeup.vercel.app",
+    siteName: "Hiwot Makeup Artist",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hiwot | Makeup Artist",
+    description:
+      "Makeup artistry for every occasion — simple, elegant, and uniquely you.",
+  },
 };
 
 export default function RootLayout({
